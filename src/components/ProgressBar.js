@@ -4,15 +4,17 @@ import Blits from '@lightningjs/blits'
 export default Blits.Component('ProgressBar', {
   template: `
     <Element w="$width" h="6" color="#888" :effects="[{type: 'radius', props: {radius: $radius}}]">
-      <Element
-        :w.transition="($width / 100) * $progress"
-        h="6"
-        color="#fff"
-        :effects="[{type: 'radius', props: {radius: $radius}}]"
-      />
+      <Element :w.transition="$progress" h="6" color="#fff" :effects="[{type: 'radius', props: {radius: $radius}}]" />
     </Element>
   `,
-  props: ['progress'],
+  props: [
+    {
+      key: 'progress',
+      cast(v) {
+        return v + '%'
+      },
+    },
+  ],
   state() {
     return {
       radius: 3,

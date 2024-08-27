@@ -4,6 +4,7 @@
   "description": "blits-components",
   "main": "index.js",
   "type": "module",
+  "license": "Apache-2.0",
   "scripts": {
     "start": "npm run dev",
     "lint": "eslint '**/*.js'",
