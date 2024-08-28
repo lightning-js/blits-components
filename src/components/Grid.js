@@ -36,7 +36,7 @@ export default Blits.Component('Grid', {
       />
     </Element>
   `,
-  props: ['itemHeight', 'itemWidth', 'itemOffset', 'items', 'columns', 'looping'],
+  props: ['itemHeight', 'itemWidth', 'itemOffset', 'items', 'columns', 'looping', 'refocusParent'],
   state() {
     return {
       focused: 0,
@@ -54,7 +54,6 @@ export default Blits.Component('Grid', {
   },
   hooks: {
     focus() {
-      this.focused = 0
       this.trigger('focused')
     },
   },
@@ -73,7 +72,12 @@ export default Blits.Component('Grid', {
 
       if (previousIndex >= 0) {
         this.focused = previousIndex
-      } else {
+      } else if (this.looping) {
+        // first see if we can go to the last row on this column
+        const lastRow = this.items.length - (this.items.length % columns)
+        const lastRowColumn = lastRow + (this.focused % columns)
+        this.focused = lastRowColumn < this.items.length ? lastRowColumn : lastRowColumn - columns
+      } else if (this.refocusParent) {
         this.parent.focus(e)
       }
     },
@@ -83,7 +87,9 @@ export default Blits.Component('Grid', {
 
       if (nextIndex < this.items.length) {
         this.focused = nextIndex
-      } else {
+      } else if (this.looping) {
+        this.focused = nextIndex % columns
+      } else if (this.refocusParent) {
         this.parent.focus(e)
       }
     },
@@ -97,7 +103,7 @@ export default Blits.Component('Grid', {
         this.focused -= 1
       } else if (this.looping) {
         this.focused = isWithinBounds ? this.focused + columns - 1 : this.items.length - 1
-      } else {
+      } else if (this.refocusParent) {
         this.parent.focus(e)
       }
     },
@@ -112,7 +118,7 @@ export default Blits.Component('Grid', {
       } else if (this.looping) {
         const index = this.focused - columns + 1
         this.focused = isNotLastItem ? index : Math.floor(this.focused / columns) * columns
-      } else {
+      } else if (this.refocusParent) {
         this.parent.focus(e)
       }
     },

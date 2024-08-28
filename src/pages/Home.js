@@ -55,7 +55,16 @@ export default Blits.Component('Home', {
         />
         <ProgressBar ref="progress" y="690" :progress="$progress" />
         <Toggle ref="toggle" y="720" :toggled="$toggle" />
-        <Grid ref="grid" y="780" items="$gridItems" itemWidth="120" itemHeight="50" itemOffset="20" looping="true" />
+        <Grid
+          ref="grid"
+          y="780"
+          items="$gridItems"
+          itemWidth="120"
+          itemHeight="50"
+          itemOffset="20"
+          looping="false"
+          refocusParent="true"
+        />
       </Element>
     </Element>
   `,
@@ -114,6 +123,14 @@ export default Blits.Component('Home', {
     },
     down() {
       this.index = this.index === this.focusable.length - 1 ? 0 : this.index + 1
+      this.setFocus()
+    },
+    right() {
+      console.log("refocus child because we don't have a right focus")
+      this.setFocus()
+    },
+    left() {
+      console.log("refocus child because we don't have a left focus")
       this.setFocus()
     },
     enter() {
