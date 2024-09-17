@@ -105,15 +105,15 @@ export default Blits.Component('Home', {
   },
   hooks: {
     ready() {
-      const name = this.select('name')
-      if (name && name.focus) name.focus()
+      const name = this.$select('name')
+      if (name && name.$focus) name.$focus()
     },
   },
   methods: {
     setFocus() {
       console.log('setting focus to:', this.focusable[this.index])
-      const next = this.select(this.focusable[this.index])
-      if (next && next.focus) next.focus()
+      const next = this.$select(this.focusable[this.index])
+      if (next && next.$focus) next.$focus()
     },
   },
   input: {
