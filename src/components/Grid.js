@@ -54,14 +54,14 @@ export default Blits.Component('Grid', {
   },
   hooks: {
     focus() {
-      this.trigger('focused')
+      this.$trigger('focused')
     },
   },
   watch: {
     focused(value) {
-      const focusItem = this.select(`grid-item-${this.items[value].id}`)
-      if (focusItem && focusItem.focus) {
-        focusItem.focus()
+      const focusItem = this.$select(`grid-item-${this.items[value].id}`)
+      if (focusItem && focusItem.$focus) {
+        focusItem.$focus()
       }
     },
   },
@@ -78,7 +78,7 @@ export default Blits.Component('Grid', {
         const lastRowColumn = lastRow + (this.focused % columns)
         this.focused = lastRowColumn < this.items.length ? lastRowColumn : lastRowColumn - columns
       } else if (this.refocusParent) {
-        this.parent.focus(e)
+        this.parent.$focus(e)
       }
     },
     down(e) {
@@ -90,7 +90,7 @@ export default Blits.Component('Grid', {
       } else if (this.looping) {
         this.focused = nextIndex % columns
       } else if (this.refocusParent) {
-        this.parent.focus(e)
+        this.parent.$focus(e)
       }
     },
     left(e) {
@@ -104,7 +104,7 @@ export default Blits.Component('Grid', {
       } else if (this.looping) {
         this.focused = isWithinBounds ? this.focused + columns - 1 : this.items.length - 1
       } else if (this.refocusParent) {
-        this.parent.focus(e)
+        this.parent.$focus(e)
       }
     },
     right(e) {
@@ -119,7 +119,7 @@ export default Blits.Component('Grid', {
         const index = this.focused - columns + 1
         this.focused = isNotLastItem ? index : Math.floor(this.focused / columns) * columns
       } else if (this.refocusParent) {
-        this.parent.focus(e)
+        this.parent.$focus(e)
       }
     },
     enter() {

@@ -57,14 +57,14 @@ export default Blits.Component('List', {
   },
   hooks: {
     focus() {
-      this.trigger('focused')
+      this.$trigger('focused')
     },
   },
   watch: {
     focused(value) {
-      const focusItem = this.select(`list-item-${this.items[value].id}`)
-      if (focusItem && focusItem.focus) {
-        focusItem.focus()
+      const focusItem = this.$select(`list-item-${this.items[value].id}`)
+      if (focusItem && focusItem.$focus) {
+        focusItem.$focus()
         this.scrollToFocus(value)
       }
     },
