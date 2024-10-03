@@ -24,6 +24,7 @@ import List from '../components/List'
 import ProgressBar from '../components/ProgressBar'
 import Toggle from '../components/Toggle'
 import Grid from '../components/Grid'
+import Keyboard from '../components/Keyboard'
 
 export default Blits.Component('Home', {
   components: {
@@ -34,10 +35,15 @@ export default Blits.Component('Home', {
     ProgressBar,
     Toggle,
     Grid,
+    Keyboard,
   },
   template: `
     <Element w="1920" h="1080" color="#121212">
       <Element x="60" y="60">
+        <Element x="360" w="400" y="-45" h="270" :y.transition="$keyboardY" :alpha.transition="$keyboardAlpha">
+          <Keyboard margin="70" perRow="7" ref="keyboard" />
+        </Element>
+    
         <Input ref="name" :inputText="$name" placeholderText="name" />
         <Input ref="password" y="70" mask="true" :inputText="$password" placeholderText="password" />
         <Checkbox ref="checkbox" y="150" :checked="$checkbox" />
@@ -74,6 +80,8 @@ export default Blits.Component('Home', {
       password: '',
       index: 0,
       checkbox: false,
+      keyboardAlpha: 0,
+      keyboardY: 0,
       focusable: ['name', 'password', 'checkbox', 'button', 'list', 'progress', 'toggle', 'grid'],
       progress: 20,
       items: [
@@ -106,14 +114,43 @@ export default Blits.Component('Home', {
   hooks: {
     ready() {
       const name = this.$select('name')
-      if (name && name.$focus) name.$focus()
+      if (name && name.$focus) {
+        name.$focus()
+      }
+    },
+    focus() {
+      if (this.keyboardAlpha) {
+        this.keyboardAlpha = 0
+        this.keyboardY = 0
+      }
+      this.setFocus()
+    },
+    init() {
+      this.registerListeners()
     },
   },
   methods: {
     setFocus() {
       console.log('setting focus to:', this.focusable[this.index])
       const next = this.$select(this.focusable[this.index])
-      if (next && next.$focus) next.$focus()
+      if (next && next.$focus) {
+        next.$focus()
+      }
+    },
+    removeLastChar(str) {
+      return str.substring(0, str.length - 1)
+    },
+    handleKey(char) {
+      if (this.focusable[this.index] === 'name') {
+        this.name += char
+      } else if (this.focusable[this.index] === 'password') {
+        this.password += char
+      }
+    },
+    registerListeners() {
+      this.$listen('onKeyboardInput', ({ key }) => {
+        this.handleKey(key)
+      })
     },
   },
   input: {
@@ -134,23 +171,48 @@ export default Blits.Component('Home', {
       this.setFocus()
     },
     enter() {
-      if (this.focusable[this.index] === 'button') {
-        console.log('submitting form:', this.name, this.password, this.checkbox)
-      } else if (this.focusable[this.index] === 'checkbox') {
-        this.checkbox = !this.checkbox
-      } else if (this.focusable[this.index] === 'progress') {
-        this.progress = this.progress === 100 ? 20 : this.progress + 20
-      } else if (this.focusable[this.index] === 'toggle') {
-        this.toggle = !this.toggle
+      const currentFocusable = this.focusable[this.index]
+      let element = null
+      switch (currentFocusable) {
+        case 'button':
+          console.log('submitting form:', this.name, this.password, this.checkbox)
+          break
+        case 'checkbox':
+          this.checkbox = !this.checkbox
+          break
+        case 'progress':
+          this.progress = this.progress === 100 ? 20 : this.progress + 20
+          break
+        case 'toggle':
+          this.toggle = !this.toggle
+          break
+        case 'name':
+        case 'password':
+          this.keyboardAlpha = 1
+          this.keyboardY = -45
+          element = this.$select('keyboard')
+          if (element && element.$focus) {
+            element.$focus()
+          }
+          break
+        default:
+          console.warn('Unrecognized focusable element:', currentFocusable)
+      }
+    },
+    back() {
+      const currentFocusable = this.focusable[this.index]
+      switch (currentFocusable) {
+        case 'name':
+          this.name = this.removeLastChar(this.name)
+          break
+        case 'password':
+          this.password = this.removeLastChar(this.password)
+          break
       }
     },
     any(e) {
       if (e.key.match(/^[\w\s.,;!@#$%^&*()_+\-=[\]{}|\\:'"<>,.?/~`]$/)) {
-        if (this.focusable[this.index] === 'name') {
-          this.name += e.key
-        } else if (this.focusable[this.index] === 'password') {
-          this.password += e.key
-        }
+        this.handleKey(e.key)
       }
     },
   },
