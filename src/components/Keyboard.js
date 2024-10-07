@@ -105,9 +105,6 @@ export default Blits.Component('Keyboard', {
     any(e) {
       if (e.key === 'Shift') {
         this.layout = this.layout === 'lower' ? 'upper' : 'lower'
-        this.$emit('layoutChange', {
-          layout: this.layout,
-        })
       }
     },
     back(e) {
