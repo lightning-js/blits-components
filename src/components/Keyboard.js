@@ -7,15 +7,20 @@ const Key = Blits.Component('Key', {
     </Element>
   `,
   props: ['value'],
+  state() {
+    return {
+      layout: 'lower',
+    }
+  },
   computed: {
     inputValue() {
-      return this.value
+      return this.layout === 'upper' ? this.value.toUpperCase() : this.value
     },
   },
   hooks: {
     init() {
       this.$listen('layoutChange', ({ layout }) => {
-        this.value = layout === 'upper' ? this.value.toUpperCase() : this.value.toLowerCase()
+        this.layout = layout
       })
     },
   },
