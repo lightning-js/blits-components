@@ -6,22 +6,10 @@ const Key = Blits.Component('Key', {
       <Text :content="$inputValue" size="32" align="center" w="50" />
     </Element>
   `,
-  props: ['value'],
-  state() {
-    return {
-      layout: 'lower',
-    }
-  },
+  props: ['value', 'layout'],
   computed: {
     inputValue() {
       return this.layout === 'upper' ? this.value.toUpperCase() : this.value
-    },
-  },
-  hooks: {
-    init() {
-      this.$listen('layoutChange', ({ layout }) => {
-        this.layout = layout
-      })
     },
   },
 })
@@ -33,7 +21,7 @@ export default Blits.Component('Keyboard', {
   template: `
     <Element>
       <Element w="60" h="60" mount="{x:0.5, y:0.5}" :x.transition="$focusX" :y.transition="$focusY" color="0xffffff33" />
-      <Key :for="(item, index) in $keys" :x="$keyX" ref="key" key="$item" value="$item" :y="$keyY" />
+      <Key :for="(item, index) in $keys" :x="$keyX" ref="key" key="$item" value="$item" :y="$keyY" :layout="$layout" />
     </Element>
   `,
   props: ['margin', 'perRow'],
