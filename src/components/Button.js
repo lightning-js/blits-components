@@ -19,7 +19,7 @@ import Blits from '@lightningjs/blits'
 
 export default Blits.Component('Button', {
   template: `
-    <Element w="$width" h="$height" :color="$backgroundColor" :effects="[{type: 'radius', props: {radius: $radius}}]">
+    <Element w="$width" h="$height" :color="$hasFocus ? '#fff' : '#888'" :effects="[{type: 'radius', props: {radius: $radius}}]">
       <Text :content="$buttonText" color="#121212" lineheight="$height" size="$fontSize" :x="$x" :mount="{x: $mountX}" />
     </Element>
   `,
@@ -43,14 +43,6 @@ export default Blits.Component('Button', {
         : this.textAlign === 'center'
         ? this.width / 2
         : 20
-    },
-  },
-  hooks: {
-    focus() {
-      this.backgroundColor = '#fff'
-    },
-    unfocus() {
-      this.backgroundColor = '#888'
     },
   },
 })
