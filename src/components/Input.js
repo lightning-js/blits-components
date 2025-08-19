@@ -23,7 +23,7 @@ export default Blits.Component('Input', {
       w="$width"
       h="$height"
       color="#121212"
-      :effects="[{type: 'radius', props: {radius: $radius}}, {type: 'border', props:{width: $borderWidth, color: $borderColor}}]"
+      :effects="[{type: 'radius', props: {radius: $radius}}, {type: 'border', props:{width: $borderWidth, color: $hasFocus ? '#fff' : '#888'}}]"
     >
       <Text
         :content="$inputText ? $input : $placeholder"
@@ -40,7 +40,6 @@ export default Blits.Component('Input', {
   state() {
     return {
       alpha: 0,
-      borderColor: '#888',
       borderWidth: 2,
       cursorBlink: null,
       fontSize: 21,
@@ -61,19 +60,16 @@ export default Blits.Component('Input', {
         : this.inputText || ''
     },
   },
-  hooks: {
-    focus() {
-      this.borderColor = '#fff'
-      this.alpha = 1
-      this.cursorBlink = this.$setInterval(() => {
-        this.alpha = this.alpha === 1 ? 0 : 1 // Toggle alpha between 1 and 0
-      }, 300)
-    },
-    unfocus() {
-      this.$clearInterval(this.cursorBlink)
-      this.borderColor = '#888'
-      this.alpha = 0
-    },
+  watch: {
+    hasFocus(isFocused) {
+      this.$clearIntervals()        // clear any running intervals created via $setInterval
+      this.alpha = isFocused ? 1 : 0
+      if (isFocused) {
+        this.$setInterval(() => {
+          this.alpha = this.alpha === 1 ? 0 : 1
+        }, 300)
+      }
+    }
   },
   methods: {
     textLoaded(dimensions) {

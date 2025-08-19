@@ -52,12 +52,10 @@ export default Blits.Component('Grid', {
       return (this.itemHeight || 300) + (this.itemOffset || 0)
     },
   },
-  hooks: {
-    focus() {
-      this.$trigger('focused')
-    },
-  },
   watch: {
+    hasFocus(isFocused) {
+      if (isFocused) this.$trigger('focused')
+    },
     focused(value) {
       const focusItem = this.$select(`grid-item-${this.items[value].id}`)
       if (focusItem && focusItem.$focus) {

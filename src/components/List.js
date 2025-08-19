@@ -55,12 +55,10 @@ export default Blits.Component('List', {
       return (this.itemWidth || 300) + (this.itemOffset || 0)
     },
   },
-  hooks: {
-    focus() {
-      this.$trigger('focused')
-    },
-  },
   watch: {
+    hasFocus(isFocused) {
+      if (isFocused) this.$trigger('focused')
+    },
     focused(value) {
       const focusItem = this.$select(`list-item-${this.items[value].id}`)
       if (focusItem && focusItem.$focus) {

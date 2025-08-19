@@ -23,7 +23,7 @@ export default Blits.Component('Toggle', {
       w="$width"
       h="$height"
       color="#121212"
-      :effects="[{type: 'radius', props: {radius: $radius}}, {type: 'border', props:{width: $borderWidth, color: $borderColor}}]"
+      :effects="[{type: 'radius', props: {radius: $radius}}, {type: 'border', props:{width: $borderWidth, color: $hasFocus ? '#fff' : '#888'}}]"
     >
       <Element
         w="$innerWidth"
@@ -49,13 +49,5 @@ export default Blits.Component('Toggle', {
       width: 80,
       offset: 20,
     }
-  },
-  hooks: {
-    focus() {
-      this.borderColor = '#fff'
-    },
-    unfocus() {
-      this.borderColor = '#888'
-    },
   },
 })

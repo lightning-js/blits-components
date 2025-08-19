@@ -23,7 +23,7 @@ export default Blits.Component('Checkbox', {
       w="$width"
       h="$height"
       color="#121212"
-      :effects="[{type: 'radius', props: {radius: $radius}}, {type: 'border', props:{width: $borderWidth, color: $borderColor}}]"
+      :effects="[{type: 'radius', props: {radius: $radius}}, {type: 'border', props:{width: $borderWidth, color: $hasFocus ? '#fff' : '#888'}}]"
     >
       <Element
         :show="$checked"
@@ -46,13 +46,5 @@ export default Blits.Component('Checkbox', {
       radius: 6,
       width: 40,
     }
-  },
-  hooks: {
-    focus() {
-      this.borderColor = '#fff'
-    },
-    unfocus() {
-      this.borderColor = '#888'
-    },
-  },
+  }, 
 })
