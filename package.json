@@ -33,5 +33,9 @@
   },
   "dependencies": {
     "@lightningjs/blits": "^1.36.0"
+  },
+  "overrides": {
+    "handlebars": "4.7.9",
+    "minimist": "1.2.8"
   }
 }
