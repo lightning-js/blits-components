@@ -27,12 +27,12 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "husky": "^9.1.7",
-    "lint-staged": "^17.5.1",
-    "prettier": "^3.9.8",
-    "vite": "^8.3.0"
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "vite": "^8.3.1"
   },
   "dependencies": {
-    "@lightningjs/blits": "^2.10.0"
+    "@lightningjs/blits": "^2.11.0"
   },
   "overrides": {
     "handlebars": "4.7.9",
