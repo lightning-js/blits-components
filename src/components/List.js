@@ -32,6 +32,7 @@ export default Blits.Component('List', {
         :key="$item.id"
         width="$itemWidth"
         height="$itemHeight"
+        :isFocused="$focused === $index"
       />
     </Element>
   `,
